@@ -9,7 +9,8 @@ rooms = [
 ]
 
 def home(req):
-  return render(req, 'home.html', {'rooms': rooms})
+  context = {'rooms': rooms}
+  return render(req, 'home.html', context)
 
 def room(req):
   return render(req, 'room.html')
