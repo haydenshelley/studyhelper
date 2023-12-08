@@ -15,7 +15,7 @@ def loginPage(req):
     return redirect('home')
 
   if req.method == 'POST':
-    username = req.POST.get('username')
+    username = req.POST.get('username').lower()
     password = req.POST.get('password')
 
     try:
@@ -40,6 +40,14 @@ def logoutUser(req):
 
 def registerPage(req):
   form = UserCreationForm()
+
+  if req.method == 'POST':
+    form = UserCreationForm(req.POST)
+    if form.is_valid():
+      user = form.save(commit=False)
+      user.username = user.username.lower()
+      user.save()
+
   return render(req, 'base/login_register.html', {'form':form})
 
 def home(req):
