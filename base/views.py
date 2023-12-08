@@ -9,6 +9,10 @@ from .models import Room, Topic
 from .forms import RoomForm
 
 def loginPage(req):
+
+  if req.user.is_authenticated:
+    return redirect('home')
+
   if req.method == 'POST':
     username = req.POST.get('username')
     password = req.POST.get('password')
@@ -83,7 +87,7 @@ def updateRoom(req, pk):
 @login_required(login_url='login')
 def deleteRoom(req, pk):
   room = Room.objects.get(id=pk)
-  
+
   if req.user != room.host:
     return HttpResponse('You are not allowed here')
   
