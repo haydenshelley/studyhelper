@@ -68,7 +68,8 @@ def home(req):
 
 def room(req, pk):
   room = Room.objects.get(id=pk)
-  context = {'room': room}
+  room_messages = room.message_set.all().order_by('-created')
+  context = {'room': room, 'room_messages': room_messages}
   return render(req, 'base/room.html', context)
 
 @login_required(login_url='login')
