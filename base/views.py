@@ -5,11 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
 from .models import Room, Topic
 from .forms import RoomForm
 
 def loginPage(req):
-
+  page = 'login'
   if req.user.is_authenticated:
     return redirect('home')
 
@@ -30,12 +31,16 @@ def loginPage(req):
     else: 
       messages.error(req, 'username OR password does not exist')
 
-  context = {}
+  context = {'page': page}
   return render(req, 'base/login_register.html', context)
 
 def logoutUser(req):
   logout(req)
   return redirect('home')
+
+def registerPage(req):
+  form = UserCreationForm()
+  return render(req, 'base/login_register.html', {'form':form})
 
 def home(req):
   q = req.GET.get('q') if req.GET.get('q') != None else ''
