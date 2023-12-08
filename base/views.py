@@ -83,6 +83,10 @@ def updateRoom(req, pk):
 @login_required(login_url='login')
 def deleteRoom(req, pk):
   room = Room.objects.get(id=pk)
+  
+  if req.user != room.host:
+    return HttpResponse('You are not allowed here')
+  
   if req.method == 'POST':
     room.delete()
     return redirect('home')
