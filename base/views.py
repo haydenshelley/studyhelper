@@ -47,6 +47,10 @@ def registerPage(req):
       user = form.save(commit=False)
       user.username = user.username.lower()
       user.save()
+      login(req, user)
+      return redirect('home')
+    else:
+      messages.error(req, 'An error occurred during registration')
 
   return render(req, 'base/login_register.html', {'form':form})
 
